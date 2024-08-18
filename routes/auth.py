@@ -27,6 +27,7 @@ def signup_user(user: UserCreate, db: Session = Depends(get_db)):
     db.add(user_db)
     db.commit()
     db.refresh(user_db)
+    
     return user_db
 
 
