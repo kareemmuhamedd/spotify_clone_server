@@ -6,8 +6,8 @@ from models.user import User
 from pydantic_schemas.user_create import UserCreate
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
-
 from pydantic_schemas.user_login import UserLogin
+import jwt
 
 
 router = APIRouter()
@@ -27,6 +27,7 @@ def signup_user(user: UserCreate, db: Session = Depends(get_db)):
     db.add(user_db)
     db.commit()
     db.refresh(user_db)
+
     return user_db
 
 
@@ -39,4 +40,6 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
     if not is_match:
         raise HTTPException(400, 'Incorrect password!')
 
-    return user_db
+    token = jwt.encode({'id': user_db.id}, 'password_key')
+
+    return {'token': token, 'user': user_db}
