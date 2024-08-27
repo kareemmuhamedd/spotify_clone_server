@@ -1,6 +1,6 @@
-# from conf_secrest import configure
+from conf_secrest import configure
 
-# configure()  # Load environment variables early
+configure()  # Load environment variables early
 
 from fastapi import FastAPI
 from models.base import Base
